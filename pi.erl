@@ -23,4 +23,4 @@ calculate_pi(LatestPi, RoundNo, CurrentSign, Precision, _, IntLatestPi) when
     Precision >= 0,
     is_integer(IntLatestPi) ->
 NewPi = LatestPi + CurrentSign * 4 * (1 / (1 + RoundNo * 2)),
-calculate_pi(NewPi, RoundNo + 1, -1 * CurrentSign, Precision, IntLatestPi, trunc(NewPi * math:pow(10, Precision))).
+calculate_pi(NewPi, RoundNo + 1, -1 * CurrentSign, Precision, IntLatestPi, round(NewPi * math:pow(10, Precision))).
