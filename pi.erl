@@ -7,7 +7,6 @@ calculate_pi(Precision) when
     Precision >= 0 ->
 calculate_pi(0, 0, 1, Precision, null, 4).
 
-% @todo why does adding is_integer or is_number guards to Precision or IntSamePi prevent the program from working?
 calculate_pi(_, _, _, Precision, IntSamePi, IntSamePi) when
     is_integer(Precision),
     is_integer(IntSamePi),
