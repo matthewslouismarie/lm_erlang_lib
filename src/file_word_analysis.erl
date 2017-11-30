@@ -17,19 +17,19 @@ read_one_line({ok, Line}, Device) ->
     analyse_line(Line, []).
 
 analyse_line(Line, Result) ->
-    extract_words(Line, [], []).
+    extract_words(Line, #{}, []).
 
 % todo: use real characters
 % todo: prevent code duplication
 % todo: prevent empty slots
-extract_words([], ProcessedArray, CurrentWord) -> ProcessedArray;
-extract_words([NextCharacter | UnprocessedLine], ProcessedArray, CurrentWord) when
+extract_words([], ResultsMap, CurrentWord) -> ResultsMap;
+extract_words([NextCharacter | UnprocessedLine], ResultsMap, CurrentWord) when
         NextCharacter =:= 32;
         NextCharacter =:= 44 ->
-    extract_words(UnprocessedLine, delimiter(ProcessedArray, CurrentWord), []);
-extract_words([NextCharacter | UnprocessedLine], ProcessedArray, CurrentWord) ->
+    extract_words(UnprocessedLine, delimiter(ResultsMap, CurrentWord), []);
+extract_words([NextCharacter | UnprocessedLine], ResultsMap, CurrentWord) ->
     NewCurrentWord = CurrentWord ++ [NextCharacter],
-    extract_words(UnprocessedLine, ProcessedArray, NewCurrentWord).
+    extract_words(UnprocessedLine, ResultsMap, NewCurrentWord).
 
-delimiter(ProcessedArray, []) -> ProcessedArray;
-delimiter(ProcessedArray, CurrentWord) -> ProcessedArray ++ [CurrentWord].
+delimiter(ResultsMap, []) -> ResultsMap;
+delimiter(ResultsMap, CurrentWord) -> maps:put(CurrentWord, maps:get(CurrentWord, ResultsMap, 0) + 1, ResultsMap).
