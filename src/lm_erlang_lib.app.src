@@ -7,7 +7,7 @@
     stdlib
    ]},
   {env,[]},
-  {modules, [ccharcount, charcount, datetime, list, pi, readfile, threads]},
+  {modules, [ccharcount, charcount, datetime, file_word_analysis, list, pi, readfile, threads]},
 
   {maintainers, []},
   {licenses, ["Apache 2.0"]},
