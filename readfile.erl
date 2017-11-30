@@ -5,11 +5,9 @@
 
 readlines(FileName) ->
     {ok, Device} = file:open(FileName, [read]),
-    try get_all_lines(Device)
+    try get_all_lines(io:get_line(Device, ""), Device)
       after file:close(Device)
     end.
 
-get_all_lines(Device) -> sub_get_all_lines(io:get_line(Device, ""), Device).
-
-sub_get_all_lines(eof, _) -> [];
-sub_get_all_lines(Line, Device) -> Line ++ get_all_lines(Device).
+get_all_lines(eof, _) -> [];
+get_all_lines(Line, Device) -> Line ++ get_all_lines(io:get_line(Device, ""), Device).
