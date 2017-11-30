@@ -23,9 +23,13 @@ analyse_line(Line, Result) ->
 % todo: prevent code duplication
 % todo: prevent empty slots
 extract_words([], ProcessedArray, CurrentWord) -> ProcessedArray;
-extract_words([NextCharacter | UnprocessedLine], ProcessedArray, CurrentWord)
-    when NextCharacter =:= 32; NextCharacter =:= 44 ->
-    extract_words(UnprocessedLine, ProcessedArray ++ [CurrentWord], []);
+extract_words([NextCharacter | UnprocessedLine], ProcessedArray, CurrentWord) when
+        NextCharacter =:= 32;
+        NextCharacter =:= 44 ->
+    extract_words(UnprocessedLine, delimiter(ProcessedArray, CurrentWord), []);
 extract_words([NextCharacter | UnprocessedLine], ProcessedArray, CurrentWord) ->
     NewCurrentWord = CurrentWord ++ [NextCharacter],
     extract_words(UnprocessedLine, ProcessedArray, NewCurrentWord).
+
+delimiter(ProcessedArray, []) -> ProcessedArray;
+delimiter(ProcessedArray, CurrentWord) -> ProcessedArray ++ [CurrentWord].
