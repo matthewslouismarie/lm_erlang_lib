@@ -32,4 +32,4 @@ extract_words([NextCharacter | UnprocessedLine], ResultsMap, CurrentWord) ->
     extract_words(UnprocessedLine, ResultsMap, NewCurrentWord).
 
 delimiter(ResultsMap, []) -> ResultsMap;
-delimiter(ResultsMap, CurrentWord) -> maps:put(CurrentWord, maps:get(CurrentWord, ResultsMap, 0) + 1, ResultsMap).
+delimiter(ResultsMap, CurrentWord) -> maps:put(string:lowercase(CurrentWord), maps:get(CurrentWord, ResultsMap, 0) + 1, ResultsMap).
