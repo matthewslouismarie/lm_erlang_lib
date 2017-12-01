@@ -1,17 +1,27 @@
 -module(fanalysis).
--export([analyze/1]).
+-export([open/2]).
+
+open(Filename, sort_by_word) ->
+    analyze(Filename, 1);
+open(Filename, sort_by_count) ->
+    analyze(Filename, 2). 
 
 % todo adjust read_ahead
-analyze(Filename) ->
+analyze(Filename, SortBy) ->
     {ok, Device} = file:open(Filename, [raw, {read_ahead, 50}]),
-    try process_file(Device)
+    try process_file(Device, SortBy)
     after
         file:close(Device)
     end.
 
-process_file(Device) ->
+process_file(Device, 1) ->
     ResultMap = analyse_file(file:read_line(Device), Device, #{}),
     ResultList = lists:keysort(1, maps:to_list(ResultMap)),
+    file:write_file("res.txt", io_lib:fwrite("~p.\n", [ResultList]));
+
+process_file(Device, 2) ->
+    ResultMap = analyse_file(file:read_line(Device), Device, #{}),
+    ResultList = lists:reverse(lists:keysort(2, maps:to_list(ResultMap))),
     file:write_file("res.txt", io_lib:fwrite("~p.\n", [ResultList])).    
 
 
