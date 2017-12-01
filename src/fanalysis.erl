@@ -1,12 +1,16 @@
 -module(fanalysis).
 -export([open/2]).
 
-open(Filename, sort_by_word) ->
-    analyze(Filename, 1);
+% todo adjust read_ahead
+open(Filename, SortBy) ->
+    {ok, Device} = file:open(Filename, [raw, {read_ahead, 50}]),
+    try ResultMap = process_file(Device, SortBy)
+    after
+        file:close(Device)
+    end,
 open(Filename, sort_by_count) ->
     analyze(Filename, 2). 
 
-% todo adjust read_ahead
 analyze(Filename, SortBy) ->
     {ok, Device} = file:open(Filename, [raw, {read_ahead, 50}]),
     try process_file(Device, SortBy)
@@ -16,8 +20,6 @@ analyze(Filename, SortBy) ->
 
 process_file(Device, 1) ->
     ResultMap = analyse_file(file:read_line(Device), Device, #{}),
-    ResultList = lists:keysort(1, maps:to_list(ResultMap)),
-    file:write_file("res.txt", io_lib:fwrite("~p.\n", [ResultList]));
 
 process_file(Device, 2) ->
     ResultMap = analyse_file(file:read_line(Device), Device, #{}),
@@ -39,8 +41,6 @@ analyse_line(Line, Result) ->
     extract_words(Line, #{}, []).
 
 % todo: use real characters
-% todo: prevent code duplication
-% todo: prevent empty slots
 extract_words([], ResultsMap, CurrentWord) -> ResultsMap;
 extract_words([NextCharacter | UnprocessedLine], ResultsMap, CurrentWord) when
         NextCharacter < 65;
