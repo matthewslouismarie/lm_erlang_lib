@@ -2,55 +2,53 @@
 -export([open/2]).
 
 % todo adjust read_ahead
-open(Filename, SortBy) ->
-    {ok, Device} = file:open(Filename, [raw, {read_ahead, 50}]),
-    try ResultMap = process_file(Device, SortBy)
-    after
-        file:close(Device)
-    end,
-open(Filename, sort_by_count) ->
-    analyze(Filename, 2). 
+open(Filename, SortBy) when
+    SortBy =:= sort_by_count;
+    SortBy =:= sort_by_word ->
+    ResultMap = analyze_file(Filename),
+    SortedResultList = sort_result(maps:to_list(ResultMap), SortBy),
+    file:write_file("result.txt", io_lib:fwrite("~p.\n", [SortedResultList])).
 
-analyze(Filename, SortBy) ->
-    {ok, Device} = file:open(Filename, [raw, {read_ahead, 50}]),
-    try process_file(Device, SortBy)
+sort_result(ResultList, sort_by_word) ->
+    lists:keysort(1, ResultList);
+sort_result(ResultList, sort_by_count) ->
+    lists:reverse(lists:keysort(2, ResultList)).
+
+analyze_file(Filename) ->
+    {ok, File} = file:open(Filename, [raw, {read_ahead, 50}]),
+    try analyze_file(file:read_line(File), File, #{}) of
+        ResultMap -> ResultMap
     after
-        file:close(Device)
+        file:close(File)
     end.
 
-process_file(Device, 1) ->
-    ResultMap = analyse_file(file:read_line(Device), Device, #{}),
+analyze_file(eof, _, Result) ->
+    Result;
+analyze_file({ok, Line}, File, Result) ->
+    NewResult = analyse_line(Line, []),
+    analyze_file(file:read_line(File), File, combine_results(Result, NewResult, maps:keys(NewResult))).
 
-process_file(Device, 2) ->
-    ResultMap = analyse_file(file:read_line(Device), Device, #{}),
-    ResultList = lists:reverse(lists:keysort(2, maps:to_list(ResultMap))),
-    file:write_file("res.txt", io_lib:fwrite("~p.\n", [ResultList])).    
+combine_results(Result, #{}, []) -> Result;
+combine_results(Result, NewResult, [CurrentKey|NextKeys]) ->
+    {_, Map} = maps:take(CurrentKey, NewResult),
+    combine_results(maps:put(CurrentKey, maps:get(CurrentKey, Result, 0) + 1, Result), Map, NextKeys).
 
-
-analyse_file(eof, _, Results) -> Results;
-analyse_file({ok, Line}, Device, Results) ->
-    NewResults = analyse_line(Line, []),
-    analyse_file(file:read_line(Device), Device, merge(Results, NewResults, maps:keys(NewResults))).
-
-merge(Results, #{}, []) -> Results;
-merge(Results, NewResults, [CurrentKey|NextKeys]) ->
-    {Value, Map} = maps:take(CurrentKey, NewResults),
-    merge(maps:put(CurrentKey, maps:get(CurrentKey, Results, 0) + 1, Results), Map, NextKeys).
-
-analyse_line(Line, Result) ->
+analyse_line(Line, _) ->
     extract_words(Line, #{}, []).
 
 % todo: use real characters
-extract_words([], ResultsMap, CurrentWord) -> ResultsMap;
-extract_words([NextCharacter | UnprocessedLine], ResultsMap, CurrentWord) when
+extract_words([], ResultMap, _) -> ResultMap;
+extract_words([NextCharacter | UnprocessedLine], ResultMap, CurrentWord) when
         NextCharacter < 65;
         NextCharacter > 90,
         NextCharacter < 97;
         NextCharacter > 122 ->
-    extract_words(UnprocessedLine, delimiter(ResultsMap, CurrentWord), []);
-extract_words([NextCharacter | UnprocessedLine], ResultsMap, CurrentWord) ->
+    extract_words(UnprocessedLine, add_word_to_result(ResultMap, CurrentWord), []);
+extract_words([NextCharacter | UnprocessedLine], ResultMap, CurrentWord) ->
     NewCurrentWord = CurrentWord ++ [NextCharacter],
-    extract_words(UnprocessedLine, ResultsMap, NewCurrentWord).
+    extract_words(UnprocessedLine, ResultMap, NewCurrentWord).
 
-delimiter(ResultsMap, []) -> ResultsMap;
-delimiter(ResultsMap, CurrentWord) -> maps:put(string:lowercase(CurrentWord), maps:get(CurrentWord, ResultsMap, 0) + 1, ResultsMap).
+add_word_to_result(ResultMap, []) ->
+    ResultMap;
+add_word_to_result(ResultMap, CurrentWord) ->
+    maps:put(string:lowercase(CurrentWord), maps:get(CurrentWord, ResultMap, 0) + 1, ResultMap).
