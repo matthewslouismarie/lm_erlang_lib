@@ -1,20 +1,23 @@
 -module(list).
--export([unique_items/1]).
+-export([analyze/2]).
 
-unique_items(A) ->
-unique_items(A, [], 0).
+analyze(A, Format) ->
+Items = unique_items(A, #{}),
+display(maps:keys(Items), Items, Format).
 
-% TODO: Hamlet
+display([], Items, _) ->
+    io:fwrite("Total number of items: ~w.\n", [maps:size(Items)]),
+    Items;
+display([CurrentKey|NextKeys], Items, Format) when
+        Format =:= "w";
+        Format =:= "c" ->
+    io:fwrite("~"++Format++" => ~w \n", [CurrentKey, maps:get(CurrentKey, Items)]),
+    display(NextKeys, Items, Format).
 
-% A: list to sort
-% B: unique items found so far
-% C: number of unique items found so far
-unique_items([], B, C) ->
-[B, C];
-unique_items(A, B, C) ->
-[H|T] = A,
-UNIQUE = not lists:member(H, B),
-case UNIQUE of
-    true -> unique_items(T, [H] ++ B, C + 1);
-    false -> unique_items(T, B, C)
-end.
+unique_items([], FinalResultMap) ->
+FinalResultMap;
+
+unique_items([NextItem | RemainingItems], ResultMap) ->
+    CurrentCount = maps:get(NextItem, ResultMap, 0),
+    NewResultMap = maps:put(NextItem, CurrentCount + 1, ResultMap),
+    unique_items(RemainingItems, NewResultMap).
