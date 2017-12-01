@@ -33,8 +33,10 @@ analyse_line(Line, Result) ->
 % todo: prevent empty slots
 extract_words([], ResultsMap, CurrentWord) -> ResultsMap;
 extract_words([NextCharacter | UnprocessedLine], ResultsMap, CurrentWord) when
-        NextCharacter =:= 32;
-        NextCharacter =:= 44 ->
+        NextCharacter < 65;
+        NextCharacter > 90,
+        NextCharacter < 97;
+        NextCharacter > 122 ->
     extract_words(UnprocessedLine, delimiter(ResultsMap, CurrentWord), []);
 extract_words([NextCharacter | UnprocessedLine], ResultsMap, CurrentWord) ->
     NewCurrentWord = CurrentWord ++ [NextCharacter],
