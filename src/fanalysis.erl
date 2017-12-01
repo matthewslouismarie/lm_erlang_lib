@@ -1,8 +1,8 @@
--module(file_word_analysis).
--export([analyse_file/1]).
+-module(fanalysis).
+-export([analyze/1]).
 
 % todo adjust read_ahead
-analyse_file(Filename) ->
+analyze(Filename) ->
     {ok, Device} = file:open(Filename, [raw, {read_ahead, 50}]),
     try process_file(Device)
     after
@@ -10,7 +10,10 @@ analyse_file(Filename) ->
     end.
 
 process_file(Device) ->
-    file:write_file("res.txt", io_lib:fwrite("~p.\n", [analyse_file(file:read_line(Device), Device, #{})])).
+    ResultMap = analyse_file(file:read_line(Device), Device, #{}),
+    ResultList = lists:keysort(1, maps:to_list(ResultMap)),
+    file:write_file("res.txt", io_lib:fwrite("~p.\n", [ResultList])).    
+
 
 analyse_file(eof, _, Results) -> Results;
 analyse_file({ok, Line}, Device, Results) ->
