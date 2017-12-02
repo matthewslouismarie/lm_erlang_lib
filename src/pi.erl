@@ -5,6 +5,9 @@
 -module(pi).
 -export([pi/0, calculate_pi/1]).
 
+%% @spec pi() -> integer()
+%% @doc Calculates pi with 5 decimal digits.
+%% @returns Pi.
 pi() ->
     calculate_pi(5).
 
