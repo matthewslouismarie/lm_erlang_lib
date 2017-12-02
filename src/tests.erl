@@ -518,3 +518,6 @@ fanalysisbyword_test() ->
 
 pi_test() ->
     3.14159 = pi:pi().
+
+unique_items_test() ->
+    5 = maps:size(unique_items:analyze([4,0,0,a,b,a,"a",0,0,4,a,"a"], null)).
