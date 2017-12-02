@@ -35,5 +35,4 @@ Then enter the command you want. E.g.
 
 ## How to generate documentation (require rebar3)
 
-    $ rebar3 shell
-    $ > edoc:application(lm_erlang_lib, []).
+    $ rebar3 edoc
