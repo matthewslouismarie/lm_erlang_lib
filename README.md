@@ -1,7 +1,11 @@
 # lm_erlang_lib
-An OTP library.
+
+An OTP library providing utility functions to calculate pi with a custom
+precision, analyse lists and files.
 
 ## How to run without rebar3
+
+First, move to the src/ directory of the project.
 
     $ cd src
 
@@ -11,6 +15,7 @@ Then, compile and run any script. E.g.
     $ pi:calculate_pi(5).
 
 ## How to run with rebar3
+
 First, install rebar3.
 
     $ git clone https://github.com/erlang/rebar3.git
@@ -28,6 +33,7 @@ Then enter the command you want. E.g.
 
     $ pi:calculate_pi(5).
 
-## To generate documentation:
+## How to generate documentation (require rebar3)
 
-    $ edoc:application(lm_erlang_lib, []).
+    $ rebar3 shell
+    $ > edoc:application(lm_erlang_lib, []).
