@@ -15,7 +15,8 @@ open(Filename, SortBy) when
     SortBy =:= sort_by_word ->
     ResultMap = analyze_file(Filename),
     SortedResultList = sort_result(maps:to_list(ResultMap), SortBy),
-    file:write_file("result.txt", io_lib:fwrite("~p.\n", [SortedResultList])).
+    file:write_file("result.txt", io_lib:fwrite("~p.\n", [SortedResultList])),
+    SortedResultList.
 
 sort_result(ResultList, sort_by_word) ->
     lists:keysort(1, ResultList);
