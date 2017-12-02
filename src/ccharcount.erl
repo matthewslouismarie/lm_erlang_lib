@@ -8,12 +8,12 @@
 -export([load/1, count/3, go/2, join/2, split/2]).
 
 %% @spec load(Filename) -> list()
-%% @todo fix typo
+%% @todo string:to_lower is obsolete
 %% @doc Read a file and returns an analysis of its letter frequency.
 %% @param Filename The name of the file to analyze.
 %% @returns A list of tuples.
-load(F) ->
-    {ok, Bin} = file:read_file(F),
+load(Filename) ->
+    {ok, Bin} = file:read_file(Filename),
     List = binary_to_list(Bin),
     Length = round(length(List) / 20),
     Ls = string:to_lower(List),
