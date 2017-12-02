@@ -50,14 +50,13 @@ join([H1|T1], [H2|T2]) ->
     {C1, N1} = H2,
     [{C1, N + N1}] ++ join(T1, T2).
 
-%% @todo Replace substr by slice.
 % splits a string into several string of Length characters.
 split([], _) ->
     [];
 split(List, Length) ->
-    S1 = string:substr(List, 1, Length),
+    S1 = string:slice(List, 0, Length),
     case length(List) > Length of
-        true -> S2 = string:substr(List, Length + 1, length(List));
+        true -> S2 = string:slice(List, Length, length(List));
         false -> S2 = []
     end,
     [S1] ++ split(S2, Length).
