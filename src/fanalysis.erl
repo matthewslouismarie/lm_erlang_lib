@@ -15,6 +15,8 @@ open(Filename, SortBy) when
     SortBy =:= sort_by_word ->
     ResultMap = analyze_file(Filename),
     SortedResultList = sort_result(maps:to_list(ResultMap), SortBy),
+    io:fwrite("Number of unique words: ~w.\n", [length(SortedResultList)]),
+    io:fwrite("The list of unique words (and their respective count) was written to result.txt.\n"),
     file:write_file("result.txt", io_lib:fwrite("~p.\n", [SortedResultList])),
     SortedResultList.
 
