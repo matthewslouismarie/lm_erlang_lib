@@ -1,5 +1,8 @@
 -module(pi).
--export([calculate_pi/1]).
+-export([pi/0, calculate_pi/1]).
+
+pi() ->
+    calculate_pi(5).
 
 % first parameter: number of rounds
 calculate_pi(Precision) when
