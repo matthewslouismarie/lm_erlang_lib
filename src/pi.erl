@@ -3,7 +3,10 @@
 %% @since 1.0.0
 %% @version 1.0.0
 -module(pi).
--export([calculate_pi/1]).
+-export([pi/0, calculate_pi/1]).
+
+pi() ->
+    calculate_pi(5).
 
 %% @spec calculate_pi(Precision) -> integer()
 %% @doc Calculates pi with the specified decimal precision.
