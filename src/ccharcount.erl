@@ -1,6 +1,13 @@
+%% @author Andy Cobley
+%% @docfile "author.edoc"
+%% @doc Counts the number of different characters in the specified file using
+%%      concurrency.
+%% @since 1.0.0
+%% @version 1.0.0
 -module (ccharcount).
 -export ([load/1,count/3,go/2,join/2,split/2]).
 
+%% @todo fix typo
 load(F)->
 {ok, Bin} = file:read_file(F),
   List=binary_to_list(Bin),

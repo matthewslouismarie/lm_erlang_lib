@@ -1,3 +1,7 @@
+%% @docfile "author.edoc"
+%% @doc Counts the number of different items in the specified list.
+%% @since 1.0.0
+%% @version 1.0.0
 -module(list).
 -export([analyze/2]).
 

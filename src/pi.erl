@@ -1,3 +1,7 @@
+%% @docfile "author.edoc"
+%% @doc Calculates pi with the specified decimal precision.
+%% @since 1.0.0
+%% @version 1.0.0
 -module(pi).
 -export([calculate_pi/1]).
 

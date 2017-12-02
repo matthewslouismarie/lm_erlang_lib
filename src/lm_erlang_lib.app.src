@@ -1,6 +1,6 @@
 {application, lm_erlang_lib,
- [{description, "An OTP library"},
-  {vsn, "0.1.0"},
+ [{description, "`lm_erlang_lib' provides you with general-purpose Erlang functions."},
+  {vsn, "1.0.0"},
   {registered, []},
   {applications,
    [kernel,
@@ -9,7 +9,7 @@
   {env,[]},
   {modules, [ccharcount, charcount, datetime, file_word_analysis, list, pi, readfile, threads]},
 
-  {maintainers, []},
+  {maintainers, ["Louis-Marie Matthews"]},
   {licenses, ["Apache 2.0"]},
   {links, []}
  ]}.

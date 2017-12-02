@@ -1,3 +1,7 @@
+%% @docfile "author.edoc"
+%% @doc Counts the number of different words in the specified file.
+%% @since 1.0.0
+%% @version 1.0.0
 -module(fanalysis).
 -export([open/2]).
 
