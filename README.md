@@ -35,4 +35,6 @@ Then enter the command you want. E.g.
 
 ## How to generate documentation (require rebar3)
 
+First, make sure to delete the folder "doc" if it already exists. Then:
+
     $ rebar3 edoc
