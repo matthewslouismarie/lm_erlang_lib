@@ -38,3 +38,7 @@ Then enter the command you want. E.g.
 First, make sure to delete the folder "doc" if it already exists. Then:
 
     $ rebar3 edoc
+
+## How to run tests (require rebar3)
+
+    $ rebar3 eunit
