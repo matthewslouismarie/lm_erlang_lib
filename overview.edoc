@@ -1,0 +1,5 @@
+@author Louis-Marie Matthews <matthewslouismarie@gmail.com>
+@copyright 2017 Louis-Marie Matthews
+@version 1.0.0
+@title lm_erlang_lib
+@doc `lm_erlang_lib' provides you with general-purpose Erlang functions.
