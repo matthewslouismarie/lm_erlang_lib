@@ -1,7 +1,7 @@
 -module(fanalysis).
 -export([open/2]).
 
-% todo adjust read_ahead
+%% @todo Adjust read_ahead.
 open(Filename, SortBy) when
     SortBy =:= sort_by_count;
     SortBy =:= sort_by_word ->
@@ -36,7 +36,7 @@ combine_results(Result, NewResult, [CurrentKey|NextKeys]) ->
 analyse_line(Line, _) ->
     extract_words(Line, #{}, []).
 
-% todo: use real characters
+%% @todo Use real characters.
 extract_words([], ResultMap, _) -> ResultMap;
 extract_words([NextCharacter | UnprocessedLine], ResultMap, CurrentWord) when
         NextCharacter < 65;

@@ -37,7 +37,7 @@ join([H1 |T1],[H2|T2])->
 {C1,N1}=H2,
 [{C1,N+N1}]++join(T1,T2).
 
-% todo: replace substr by slice.
+%% @todo Replace substr by slice.
 % substr: start offset starts at 1 -_-
 % splits a string into several string of Length characters.
 split([],_)->[];
