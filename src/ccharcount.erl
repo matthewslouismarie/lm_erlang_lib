@@ -5,7 +5,7 @@
 %% @since 1.0.0
 %% @version 1.0.0
 -module(ccharcount).
--export([load/1,count/3,go/2,join/2,split/2]).
+-export([load/1, count/3, go/2, join/2, split/2]).
 
 %% @spec load(Filename) -> list()
 %% @todo fix typo
@@ -34,7 +34,7 @@ countsplit([H|T], PIDs) ->
 
 receive_results([], Results) ->
     Results;
-receive_results([H|T], Results) ->
+receive_results([_|T], Results) ->
     receive
         {NewResult} -> receive_results(T, join(Results, NewResult));
         _Other -> {error, unknown}
@@ -46,7 +46,7 @@ join([], []) ->
 join([], R)->
     R;
 join([H1|T1], [H2|T2]) ->
-    {C, N} = H1,
+    {_, N} = H1,
     {C1, N1} = H2,
     [{C1, N + N1}] ++ join(T1, T2).
 
@@ -62,7 +62,7 @@ split(List, Length) ->
     end,
     [S1] ++ split(S2, Length).
 
-count(Ch, [], N) ->
+count(_, [], N) ->
     N;
 count(Ch, [H|T], N) ->
     case Ch == H of
@@ -80,5 +80,5 @@ rgo([H|T], L, Result) ->
     Result2 = Result ++ [{[H], N}],
     rgo(T, L, Result2);
 
-rgo([], L, Result) ->
+rgo([], _, Result) ->
     Result.
