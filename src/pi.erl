@@ -5,7 +5,11 @@
 -module(pi).
 -export([calculate_pi/1]).
 
-% first parameter: number of rounds
+%% @spec calculate_pi(Precision) -> integer()
+%% @doc Calculates pi with the specified decimal precision.
+%% @param Precision The decimal precision of the calculation (i.e. the number of
+%%                  digits at the right of the dot).
+%% @returns The calculated value of pi with the given precision.
 calculate_pi(Precision) when
     is_integer(Precision),
     Precision >= 0 ->

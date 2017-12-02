@@ -5,18 +5,26 @@
 -module(list).
 -export([analyze/2]).
 
-analyze(A, Format) ->
-Items = unique_items(A, #{}),
-display(maps:keys(Items), Items, Format).
+%% @spec analyze(List, Format) -> map()
+%% @doc Returns the number of unique items in the given list, and the number of 
+%%      times it appears.
+%% @param List The list to analyze.
+%% @param Format Either "c" (if the list contains letters) or anything else if
+%%        not.
+%% @returns The calculated value of pi with the given precision.
+analyze(List, Format) ->
+    Items = unique_items(List, #{}),
+    display(maps:keys(Items), Items, Format).
 
 display([], Items, _) ->
     io:fwrite("Total number of items: ~w.\n", [maps:size(Items)]),
     Items;
-display([CurrentKey|NextKeys], Items, Format) when
-        Format =:= "w";
-        Format =:= "c" ->
-    io:fwrite("~"++Format++" => ~w \n", [CurrentKey, maps:get(CurrentKey, Items)]),
-    display(NextKeys, Items, Format).
+display([CurrentKey|NextKeys], Items, letter) ->
+    io:fwrite("~c => ~w \n", [CurrentKey, maps:get(CurrentKey, Items)]),
+    display(NextKeys, Items, letter);
+display(_, Items, _) ->
+    io:fwrite("Total number of items: ~w.\n", [maps:size(Items)]),
+    Items.
 
 unique_items([], FinalResultMap) ->
 FinalResultMap;
