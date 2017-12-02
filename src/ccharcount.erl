@@ -1,19 +1,8 @@
-%% @author Andy Cobley
-%% @docfile "author.edoc"
-%% @doc Counts the number of different characters in the specified file using
-%%      concurrency.
-%% @since 1.0.0
-%% @version 1.0.0
 -module (ccharcount).
--export ([load/1]).
+-export ([load/1,count/3,go/2,join/2,split/2]).
 
-%% @spec load(Filename) -> list()
-%% @todo fix typo
-%% @doc Read a file and returns an analysis of its letter frequency.
-%% @param Filename The name of the file to analyze.
-%% @returns A list of tuples.
-load(Filename)->
-{ok, Bin} = file:read_file(Filename),
+load(F)->
+{ok, Bin} = file:read_file(F),
   List=binary_to_list(Bin),
   Length=round(length(List)/20),
   Ls=string:to_lower(List),
@@ -48,7 +37,8 @@ join([H1 |T1],[H2|T2])->
 {C1,N1}=H2,
 [{C1,N+N1}]++join(T1,T2).
 
-%% @todo Replace substr by slice.
+% todo: replace substr by slice.
+% substr: start offset starts at 1 -_-
 % splits a string into several string of Length characters.
 split([],_)->[];
 split(List,Length)->
