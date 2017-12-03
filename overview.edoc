@@ -1,4 +1,4 @@
-@author Louis-Marie Matthews <matthewslouismarie@gmail.com>
+@docfile "author.edoc"
 @version 1.0.0
 @title lm_erlang_lib
 @doc `lm_erlang_lib' provides you with general-purpose Erlang functions.

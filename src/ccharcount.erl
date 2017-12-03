@@ -5,10 +5,10 @@
 %% @since 1.0.0
 %% @version 1.0.0
 -module(ccharcount).
--export([load/1, count/3, go/2, join/2, split/2]).
+-export([load/1, go/2]).
 
 %% @spec load(Filename) -> list()
-%% @doc Read a file and returns an analysis of its letter frequency.
+%% @doc Reads a file and returns an analysis of its letter frequency.
 %% @param Filename The name of the file to analyze.
 %% @returns A list of tuples.
 load(Filename) ->
@@ -21,9 +21,13 @@ load(Filename) ->
     Result = countsplit(Sl, []),
     Result.
 
-% returns a list of tuples. E.g. [{"a", 10518}, …].
-% first parameter: list to analyse. Each item is a string.
-% second parameter: result so far
+%% @spec countsplit(ChunksList, PidList) -> list()
+%% @doc Analyzes all the given chunks using concurrency, fetches back the result
+%%      and returns it.
+%% @param Chunks The list to analyse. Each item is a string.
+%% @param PIDs The PIDs list of the created processes (which is only used to
+%%             determine the number of processes).
+%% @returns The results as a list of tuples.
 countsplit([], PIDs) ->
     receive_results(PIDs, []);
 countsplit([H|T], PIDs) ->
@@ -39,7 +43,6 @@ receive_results([_|T], Results) ->
         _Other -> {error, unknown}
     end.
 
-% what if a certain letter does not appear in the list? Maybe that's not possible. How is the correct order ensured? Maybe in go().
 join([], []) ->
     [];
 join([], R)->
@@ -49,7 +52,8 @@ join([H1|T1], [H2|T2]) ->
     {C1, N1} = H2,
     [{C1, N + N1}] ++ join(T1, T2).
 
-% splits a string into several string of Length characters.
+%% @spec split(String, Length) -> list()
+%% @doc Splits a string into several string of Length characters.
 split([], _) ->
     [];
 split(List, Length) ->
@@ -68,11 +72,14 @@ count(Ch, [H|T], N) ->
         false -> count(Ch, T, N)
     end.
 
+%% @spec go(L, PID) -> none()
+%% @doc Processes a chunk and sends the result to the parent process.
+%% @param L The chunk to analyze.
+%% @param PID The PID of the parent process.
 go(L, PID)->
     Alph = [$a,$b,$c,$d,$e,$f,$g,$h,$i,$j,$k,$l,$m,$n,$o,$p,$q,$r,$s,$t,$u,$v,$w,$x,$y,$z],
     PID ! {rgo(Alph, L, [])}.
 
-% called once per letter
 rgo([H|T], L, Result) ->
     N = count(H, L, 0),
     Result2 = Result ++ [{[H], N}],

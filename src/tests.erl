@@ -1,3 +1,4 @@
+%% @hidden
 -include_lib("eunit/include/eunit.hrl").
 -module(tests).
 

@@ -7,9 +7,9 @@
 
 %% @spec analyze(List, Format) -> map()
 %% @doc Returns the number of unique items in the given list, and the number of 
-%%      times it appears.
+%%      times each one appears.
 %% @param List The list to analyze.
-%% @param Format Either letter (if the list contains letters) or default if not.
+%% @param Format Either `letter' (if the list contains letters) or `default' if not.
 %% @returns The calculated value of pi with the given precision.
 analyze(List, Format) ->
     Items = unique_items(List, #{}),

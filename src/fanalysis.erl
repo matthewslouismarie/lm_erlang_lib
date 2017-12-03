@@ -5,10 +5,10 @@
 -module(fanalysis).
 -export([open/2]).
 
-%% @spec open(Filename, SortBy) -> none()
+%% @spec open(Filename, SortBy) -> map()
 %% @doc Opens a file and writes its word frequency in result.txt.
-%% @param Filename the name of the file to analyze.
-%% @param SortBy Either sort_by_word or sort_by_count.
+%% @param Filename The name of the file to analyze.
+%% @param SortBy Either `sort_by_word' or `sort_by_count'.
 %% @todo Adjust read_ahead.
 open(Filename, SortBy) when
     SortBy =:= sort_by_count;
