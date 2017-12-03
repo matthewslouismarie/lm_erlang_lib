@@ -1,7 +1,18 @@
 # lm_erlang_lib
 
 An OTP library providing utility functions to calculate pi with a custom
-precision, analyse lists and files.
+precision, and to analyse lists and files.
+
+Here is the list of available functions:
+
+ - To calculate pi with a five-decimals precision, do: `pi:pi().`.
+ - To count the unique letters in a file using concurrency, do: `ccharcount:load("hamlet.txt").`.
+ - To count the unique words in a file, do: `fanalysis:open("hamlet.txt", sort_by_count).` or `fanalysis:open("hamlet.txt", sort_by_word).`. (The output will be written to the file result.txt.)
+ - To count the unique items in a list, do: `unique_items:analyze("This is a string", letter).` or `unique_items:analyze([4, 1, 0, 0, 9, "9"], default).`.
+
+This is a rebar3 project. You don't need it to run the program, but it makes it
+easier. It also allows you to generate the documentation for the project and to
+run unit tests.
 
 ## How to run without rebar3
 
@@ -12,7 +23,7 @@ First, move to the src/ directory of the project.
 Then, compile and run any script. E.g.
 
     $ c(pi).
-    $ pi:calculate_pi(5).
+    $ pi:pi().
 
 ## How to run with rebar3
 
@@ -31,7 +42,7 @@ To compile and run it:
 
 Then enter the command you want. E.g.
 
-    $ pi:calculate_pi(5).
+    1> pi:pi().
 
 ## How to generate documentation (require rebar3)
 
